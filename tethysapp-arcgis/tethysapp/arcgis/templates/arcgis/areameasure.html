@@ -1,0 +1,189 @@
+{% extends "arcgis/base.html" %}
+{% load tethys_gizmos %}
+
+{% block header_buttons %}
+{% endblock %}
+
+{% block app_content %}
+<h1>This is a area measurement geoprocessing service (I copied and pasted it from Esri's website)</h1>
+<!--This is not my own work and I wanted to give the credit where it's due--copied and pasted from Esri's website from the following link:
+https://developers.arcgis.com/javascript/latest/sample-code/sandbox/index.html?sample=widgets-measurement-2d-->
+<style>
+    #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 750px;
+      width: 1500px;
+    }
+
+    #topbar {
+      background: #fff;
+      padding: 10px;
+    }
+
+    .action-button {
+      font-size: 16px;
+      background-color: transparent;
+      border: 1px solid #D3D3D3;
+      color: #6e6e6e;
+      height: 32px;
+      width: 32px;
+      text-align: center;
+      box-shadow: 0 0 1px rgba(0, 0, 0, 0.3);
+    }
+
+    .action-button:hover,
+    .action-button:focus {
+      background: #0079c1;
+      color: #e4e4e4;
+    }
+
+    .active {
+      background: #0079c1;
+      color: #e4e4e4;
+    }
+
+  </style>
+
+  <link rel="stylesheet" href="https://js.arcgis.com/4.10/esri/css/main.css">
+  <script src="https://js.arcgis.com/4.10/"></script>
+
+  <script>
+    require([
+      "esri/views/MapView",
+      "esri/WebMap",
+      "esri/widgets/DistanceMeasurement2D",
+      "esri/widgets/AreaMeasurement2D"
+    ], function (
+      MapView,
+      WebMap,
+      DistanceMeasurement2D,
+      AreaMeasurement2D
+    ) {
+
+      var activeWidget = null;
+
+      // load a webmap
+      const webmap = new WebMap({
+        portalItem: {
+          id: "990d0191f2574db495c4304a01c3e65b"
+        }
+      });
+
+      // create the map view
+      const view = new MapView({
+        container: "viewDiv",
+        map: webmap
+      });
+
+      // add the toolbar for the measurement widgets
+      view.ui.add("topbar", "top-right");
+
+      document.getElementById("distanceButton").addEventListener("click",
+        function () {
+          setActiveWidget(null);
+          if (!this.classList.contains('active')) {
+            setActiveWidget('distance');
+          } else {
+            setActiveButton(null);
+          }
+        });
+
+      document.getElementById("areaButton").addEventListener("click",
+        function () {
+          setActiveWidget(null);
+          if (!this.classList.contains('active')) {
+            setActiveWidget('area');
+          } else {
+            setActiveButton(null);
+          }
+        });
+
+      function setActiveWidget(type) {
+        switch (type) {
+          case "distance":
+            activeWidget = new DistanceMeasurement2D({
+              view: view
+            });
+
+            // skip the initial 'new measurement' button
+            activeWidget.viewModel.newMeasurement();
+
+            view.ui.add(activeWidget, "top-right");
+            setActiveButton(document.getElementById('distanceButton'));
+            break;
+          case "area":
+            activeWidget = new AreaMeasurement2D({
+              view: view
+            });
+
+            // skip the initial 'new measurement' button
+            activeWidget.viewModel.newMeasurement();
+
+            view.ui.add(activeWidget, "top-right");
+            setActiveButton(document.getElementById('areaButton'));
+            break;
+          case null:
+            if (activeWidget) {
+              view.ui.remove(activeWidget);
+              activeWidget.destroy();
+              activeWidget = null;
+            }
+            break;
+        }
+      }
+
+      function setActiveButton(selectedButton) {
+        // focus the view to activate keyboard shortcuts for sketching
+        view.focus();
+        var elements = document.getElementsByClassName("active");
+        for (var i = 0; i < elements.length; i++) {
+          elements[i].classList.remove("active");
+        }
+        if (selectedButton) {
+          selectedButton.classList.add("active");
+        }
+      }
+
+    });
+
+  </script>
+</head>
+
+<body>
+  <div id="viewDiv"></div>
+  <div id="topbar">
+    <button class="action-button esri-icon-minus" id="distanceButton" type="button"
+      title="Measure distance between two or more points"></button>
+    <button class="action-button esri-icon-polygon" id="areaButton" type="button"
+      title="Measure area"></button>
+  </div>
+</body>
+{% endblock %}
+
+{# Use the after_app_content block for modals #}
+{% block after_app_content %}
+  <!-- Example Modal -->
+  <div class="modal fade" id="help-modal" tabindex="-1" role="dialog" aria-labelledby="help-modal-label">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h5 class="modal-title" id="help-modal-label">Example Modal</h5>
+        </div>
+        <div class="modal-body">
+          <p>You can add custom buttons to the app header using the <code>header_buttons</code> block. Use anchor/link tags for the button and wrap it in a div with the class <code>header-button</code>. For buttons with the gliphyicons, add the <code>glyphicon-button</code> class as well.</p>
+          <p>Ever have trouble using a modal in a Tethys app? Use the <code>after_app_content</code> block for modal content to allow them to function properly. See: <a href="https://getbootstrap.com/javascript/#modals">Bootstrap Modals</a></p>
+          <p>Add tooltips to any element by adding the <code>data-toggle</code>, <code>data-placement</code>, and <code>title</code> attributes to the button. See: <a href="https://getbootstrap.com/javascript/#tooltips">Bootstrap Tooltips</a></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block app_actions %}
+{% endblock %}

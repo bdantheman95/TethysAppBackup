@@ -1,0 +1,16 @@
+setup.py
+tethysapp/__init__.py
+tethysapp/arcgis/__init__.py
+tethysapp/arcgis/api.py
+tethysapp/arcgis/app.py
+tethysapp/arcgis/controllers.py
+tethysapp/arcgis/handoff.py
+tethysapp/arcgis/model.py
+tethysapp/arcgis/tests/__init__.py
+tethysapp/arcgis/tests/tests.py
+tethysapp_arcgis.egg-info/PKG-INFO
+tethysapp_arcgis.egg-info/SOURCES.txt
+tethysapp_arcgis.egg-info/dependency_links.txt
+tethysapp_arcgis.egg-info/namespace_packages.txt
+tethysapp_arcgis.egg-info/not-zip-safe
+tethysapp_arcgis.egg-info/top_level.txt
