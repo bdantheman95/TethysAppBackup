@@ -1,0 +1,29 @@
+{% extends "nerdalicious_excavate/base.html" %}
+{% load tethys_gizmos %}
+
+{% block header_buttons %}
+  <div class="header-button glyphicon-button" data-toggle="tooltip" data-placement="bottom" title="Help">
+    <a data-toggle="modal" data-target="#help-modal"><span class="glyphicon glyphicon-question-sign"></span></a>
+  </div>
+{% endblock %}
+
+{% block app_content %}
+
+<style>
+body {
+  background-color:lightblue
+}
+h1{
+font-weight: bold;
+}
+</style>
+<h1>About the Excavator App</h1><p><i>A "ground-breaking" Web App</i></p>
+<p> Built by Seth Richardson, Brandon Roberts, and Kyler Ashby (AKA Team Nerdalicious)</p>
+<h3>How to Use the App</h3>
+ <ul>
+  <li>Open up Map Page tab on the left</li>
+  <li>Follow the instructions on the Map Page</li>
+  <li>Express your inner joy that the difficult calculations have been done for you</li>
+   <li>Repeat as needed</li>
+</ul>
+{% endblock %}
